@@ -286,5 +286,4 @@ joblib.dump(vectorizer, 'vectorizer.joblib')
 #     else:
 #         st.write("Please enter a review to predict sentiment.")
 
-!streamlit run app.py
 
