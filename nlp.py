@@ -222,68 +222,68 @@ joblib.dump(vectorizer, 'vectorizer.joblib')
 
 # Commented out IPython magic to ensure Python compatibility.
 # %%writefile app.py
-# import streamlit as st
-# import joblib
-# import nltk
-# from nltk.corpus import stopwords
-# from nltk.tokenize import word_tokenize
-# from nltk.stem import WordNetLemmatizer
-# import string
+import streamlit as st
+import joblib
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+import string
 # 
 # # Download necessary NLTK data (if not already downloaded)
-# try:
-#     nltk.data.find('tokenizers/punkt')
-# except LookupError:
-#     nltk.download('punkt')
-# try:
-#     nltk.data.find('corpora/stopwords')
-# except LookupError:
-#     nltk.download('stopwords')
-# try:
-#     nltk.data.find('corpora/wordnet')
-# except LookupError:
-#     nltk.download('wordnet')
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
+try:
+    nltk.data.find('corpora/wordnet')
+except LookupError:
+    nltk.download('wordnet')
 # 
 # 
-# st.title('Sentiment Analysis of Product Reviews')
+st.title('Sentiment Analysis of Product Reviews')
 # 
 # # Load the saved model and vectorizer
-# model = joblib.load('best_model.joblib')
-# vectorizer = joblib.load('vectorizer.joblib')
+model = joblib.load('best_model.joblib')
+vectorizer = joblib.load('vectorizer.joblib')
 # 
 # # Initialize lemmatizer
-# lemmatizer = WordNetLemmatizer()
+lemmatizer = WordNetLemmatizer()
 # 
 # # Function to clean and lemmatize text
-# def clean_and_lemmatize_text(text):
-#     if isinstance(text, str):
-#         text = text.lower()
-#         text = text.translate(str.maketrans('', '', string.punctuation))
-#         tokens = word_tokenize(text)
-#         stop_words = set(stopwords.words('english'))
-#         filtered_tokens = [lemmatizer.lemmatize(word) for word in tokens if word not in stop_words]
-#         return ' '.join(filtered_tokens)
-#     else:
-#         return ''
+def clean_and_lemmatize_text(text):
+    if isinstance(text, str):
+        text = text.lower()
+        text = text.translate(str.maketrans('', '', string.punctuation))
+        tokens = word_tokenize(text)
+        stop_words = set(stopwords.words('english'))
+        filtered_tokens = [lemmatizer.lemmatize(word) for word in tokens if word not in stop_words]
+        return ' '.join(filtered_tokens)
+    else:
+        return ''
 # 
-# user_input = st.text_area("Enter your review here:")
+user_input = st.text_area("Enter your review here:")
 # 
-# if st.button('Predict Sentiment'):
-#     if user_input:
-#         # Clean and vectorize the user input
-#         cleaned_input = clean_and_lemmatize_text(user_input)
-#         input_vectorized = vectorizer.transform([cleaned_input]) # Vectorizer expects a list
-# 
-#         # Make the prediction
-#         prediction = model.predict(input_vectorized)
-# 
-#         # Map numerical prediction to sentiment label
-#         sentiment_map = {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
-#         sentiment_label = sentiment_map.get(prediction[0], 'Unknown')
-# 
-#         # Display the prediction
-#         st.write(f"Predicted Sentiment: **{sentiment_label}**")
-#     else:
-#         st.write("Please enter a review to predict sentiment.")
+if st.button('Predict Sentiment'):
+    if user_input:
+        # Clean and vectorize the user input
+        cleaned_input = clean_and_lemmatize_text(user_input)
+        input_vectorized = vectorizer.transform([cleaned_input]) # Vectorizer expects a list
+
+
+        prediction = model.predict(input_vectorized)
+
+        # Map numerical prediction to sentiment label
+        sentiment_map = {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
+        sentiment_label = sentiment_map.get(prediction[0], 'Unknown')
+
+        # Display the prediction
+        st.write(f"Predicted Sentiment: **{sentiment_label}**")
+    else:
+        st.write("Please enter a review to predict sentiment.")
 
 
